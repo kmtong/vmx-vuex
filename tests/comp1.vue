@@ -1,5 +1,8 @@
 <template>
-  <div>{{ myState }}</div>
+  <div>
+    <div>{{ myState }}</div>
+    <div>{{ GlobalState }}</div>
+  </div>
 </template>
 
 <script>
@@ -9,9 +12,12 @@
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('ext')
 
+import { mapState } from 'vuex'
+
 export default {
   computed: {
     ...mapGetters(["myState"]),
+    ...mapState(["GlobalState"])
   },
 };
 </script>

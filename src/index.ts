@@ -38,7 +38,12 @@ export default {
         const state = () => {
             if (stateArray && stateArray.length > 0) {
                 // call state creation function
-                const stateObjs = stateArray.map(s => s());
+                const stateObjs = stateArray.map(s => {
+                    if (typeof(s) === 'function') {
+                        return s();
+                    }
+                    return s;
+                });
                 return stateObjs.reduce((a, b) => {
                     return { ...a, ...b };
                 }, {})

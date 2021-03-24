@@ -8,6 +8,12 @@ const MyExtension = {
     name: "my-ext",
     dependsOn: ["vuex"],
     extensions: {
+        "vuex.state": { GlobalState: "init global state" },
+        "vuex.mutations": {
+            SetGlobalState(state, s) {
+                state.GlobalState = s;
+            }
+        },
         "vuex.modules": {
             ext: {
                 namespaced: true,
@@ -43,6 +49,8 @@ test("Init VuexModule Test", () => {
         localVue, store
     });
     expect(wrapper.text()).toContain("State1");
+    expect(wrapper.text()).toContain("init global state");
+    
     expect(store.state['ext'].myState).toBe('State1')
     expect(store.getters['ext/myState']).toBe('State1')
 
@@ -50,7 +58,11 @@ test("Init VuexModule Test", () => {
     expect(store.state['ext'].myState).toBe('State2')
     expect(store.getters['ext/myState']).toBe('State2')
 
+    store.commit("SetGlobalState", "another global state");
+    expect(store.state['GlobalState']).toBe('another global state')
+
     wrapper.vm.$nextTick(() => {
         expect(wrapper.text()).toContain("State2");
+        expect(wrapper.text()).toContain("another global state");
     })
 })
