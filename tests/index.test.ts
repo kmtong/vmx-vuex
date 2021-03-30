@@ -1,5 +1,5 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import Vue from 'vue'
+import { mount } from '@vue/test-utils'
+import { createApp } from 'vue'
 import VueModx from 'vue-modx'
 import VuexModule from '../src/index'
 import Comp1 from './comp1.vue'
@@ -33,12 +33,12 @@ const MyExtension = {
     }
 }
 
-const localVue = createLocalVue();
+const app = createApp({})
 
-localVue.use(VueModx, {
+app.use(VueModx, {
     modules: [VuexModule, MyExtension],
     config: {
-        vue: localVue
+        vue: app
     }
 })
 
@@ -46,11 +46,13 @@ const store = VuexModule.store();
 
 test("Init VuexModule Test", () => {
     const wrapper = mount(Comp1, {
-        localVue, store
+        global: {
+            plugins: [store]
+        }
     });
     expect(wrapper.text()).toContain("State1");
     expect(wrapper.text()).toContain("init global state");
-    
+
     expect(store.state['ext'].myState).toBe('State1')
     expect(store.getters['ext/myState']).toBe('State1')
 
