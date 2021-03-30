@@ -3,25 +3,23 @@
 ## 启动
 
 ```js
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 import VueModx from 'vue-modx'
 import VuexModule from 'vmx-vuex'
 
+import App from './App.vue'
+
+// vue3-style
+const app = createApp(App)
+
 // start plugin framework
-Vue.use(VueModx, {
+app.use(VueModx, {
   modules: [VuexModule],
   config: {}
 })
 
-// get store to create Vue object
-const store = VuexModule.store()
-
-new Vue({
-  el: '#app',
-  store,
-  render: h => h(App)
-})
+app.mount('#app')
 
 ```
 
